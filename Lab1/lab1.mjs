@@ -78,6 +78,7 @@ export const functionThree = (str) => {
   
   let highestCount = 0;
   let mostCommon = Infinity;
+
   for (let len in commonLength) {
     let count = commonLength[len];
     let numLen = Number(len);
@@ -102,7 +103,22 @@ export const functionThree = (str) => {
 };
 
 export const functionFour = (arr) => {
+
+  let mySet = new Set(arr);
+  let newArr = [...mySet];
+
   // Implement function 4 here
+  let numArr = new Set();
+  let alphaArr = new Set();
+  for(let x of arr){
+    if(Number.isInteger(x)){
+      numArr.add(x);
+    }
+    else{
+      alphaArr.add(x);
+    }
+  }
+  console.log(alphaArr);
   return; //return result
 };
 

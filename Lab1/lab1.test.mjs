@@ -16,8 +16,15 @@ import * as lab1 from './lab1.mjs';
 // console.log(lab1.functionTwo(["B2B!!!", "Shh...", "rhythm"])); // returns and then outputs: {B2B!!!: 1, Shh...: 2, rhythm: 5}
 
 //FunctionoThree
-console.log(lab1.functionThree("Hello world from Stevens")); // returns and then outputs: {mostCommonLength: 5, words: "Hello, world", averageLength: 5}
-console.log(lab1.functionThree("This is a test.")); // returns and then outputs: {mostCommonLength: 1, words: "a", averageLength: 3}
-console.log(lab1.functionThree("OneWord")); // returns and then outputs: {mostCommonLength: 7, words: "OneWord", averageLength: 7}
-console.log(lab1.functionThree("")); // returns and then outputs: {mostCommonLength: 0, words: null, averageLength: 0}
-console.log(lab1.functionThree("I am programming now! now!")); // returns and then outputs: {mostCommonLength: 4, words: "now!, now!", averageLength: 4}
+// console.log(lab1.functionThree("Hello world from Stevens")); // returns and then outputs: {mostCommonLength: 5, words: "Hello, world", averageLength: 5}
+// console.log(lab1.functionThree("This is a test.")); // returns and then outputs: {mostCommonLength: 1, words: "a", averageLength: 3}
+// console.log(lab1.functionThree("OneWord")); // returns and then outputs: {mostCommonLength: 7, words: "OneWord", averageLength: 7}
+// console.log(lab1.functionThree("")); // returns and then outputs: {mostCommonLength: 0, words: null, averageLength: 0}
+// console.log(lab1.functionThree("I am programming now! now!")); // returns and then outputs: {mostCommonLength: 4, words: "now!, now!", averageLength: 4}
+
+//FunctionFour
+console.log(lab1.functionFour([3, "guitar", 1, "bass", -10, "bass", 3]));  // returns and then outputs: ["bass", "guitar", -10, 1, 3]
+console.log(lab1.functionFour(["apple", "orange", "kiwi", 10, -2, 2])); // returns and then outputs: ["apple", "kiwi", "orange", -2, 2, 10]
+console.log(lab1.functionFour([100, "Zebra", "Ant", 50, -100])); // returns and then outputs: ["Ant", "Zebra", -100, 50, 100]
+console.log(lab1.functionFour(["one", "two", "three", "two", 7, 8, 7]));// returns and then outputs: ["two", "one", "three", 8, 7]
+console.log(lab1.functionFour([1, -1, 2, -2, 0, "AaA", "bb", "bb!"])); // returns and then outputs: ["bb", "bb!", "AaA", -2, 0, 2, -1, 1]
