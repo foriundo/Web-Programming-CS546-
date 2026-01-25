@@ -62,7 +62,43 @@ export const functionTwo = (arr) => {
 
 export const functionThree = (str) => {
   // Implement function 3 here
-  return; //return result
+  let obj =  {mostCommonLength: 0, words: null, averageLength: 0}
+  if(str.length === 0){
+    return obj;
+  }
+  let new_arr = str.split(" ");
+  let avg = 0;
+  let commonLength = {};
+
+  for(let x of new_arr){
+    avg += x.length;
+    commonLength[x.length] = (commonLength[x.length] || 0) + 1;
+  }
+  obj["averageLength"] = (Math.floor(avg / (new_arr.length)));
+  
+  let highestCount = 0;
+  let mostCommon = Infinity;
+  for (let len in commonLength) {
+    let count = commonLength[len];
+    let numLen = Number(len);
+    if( count > highestCount || (count === highestCount && numLen < mostCommon)){
+      highestCount = count;
+      mostCommon = numLen;
+    }
+  }
+
+  obj["mostCommonLength"] = mostCommon;
+
+  let wordsArr = [];
+  for(let x of new_arr){
+    if(x.length === mostCommon){
+      wordsArr.push(x);
+    }
+  }
+
+  obj["words"] = wordsArr.join(", ");
+
+  return obj; //return result
 };
 
 export const functionFour = (arr) => {
