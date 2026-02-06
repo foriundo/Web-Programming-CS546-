@@ -5,152 +5,160 @@ import { trimmedArrayStats, mergePairsUnique, commonElementsStable } from "./arr
 import { findIsograms, weaveChars, spliceSwap } from "./stringUtils.js";
 import { deepEqualityIgnore, commonKeyValuePaths, calculateObjectChained } from "./objectUtils.js";
 
-// ---------------- trimmedArrayStats ----------------
+/* arrayUtils.js*/
+/* trimmedArrayStats Tests */
 try {
-  const res = trimmedArrayStats([9, 15, 25.5, -5, 5, 7, 10, 5, 11, 30, 4, 1, -20], 1);
-  console.log("trimmedArrayStats PASS:", res);
+  // Should Pass
+  const trimmedArrayStatsOne = trimmedArrayStats([9, 15, 25.5, -5, 5, 7, 10, 5, 11, 30, 4, 1, -20], 1);
+  console.log("trimmedArrayStats passed successfully");
 } catch (e) {
-  console.error("trimmedArrayStats should have passed but failed:", e);
+  console.error("trimmedArrayStats failed test case");
+}
+try {
+  // Should Fail
+  const trimmedArrayStatsTwo = trimmedArrayStats([], 1);
+  console.error("trimmedArrayStats did not error");
+} catch (e) {
+  console.log("trimmedArrayStats failed successfully");
+}
+
+/* mergePairsUnique Tests */
+try {
+  // Should Pass
+  const mergePairsUniqueOne = mergePairsUnique(["foo", "bar"], [5, "John"], ["foo", "bar"], ["foo", "not bar"], ["foo", "not bar"]);
+  console.log("mergePairsUnique passed successfully");
+} catch (e) {
+  console.error("mergePairsUnique failed test case");
+}
+try {
+  // Should Fail
+  const mergePairsUniqueTwo = mergePairsUnique([]);
+  console.error("mergePairsUnique did not error");
+} catch (e) {
+  console.log("mergePairsUnique failed successfully");
+}
+
+/* commonElementsStable Tests */
+try {
+  // Should Pass
+  const commonElementsStableOne = commonElementsStable([5, 7, 5, 9], [20, 5, 7, 5]);
+  console.log("commonElementsStable passed successfully");
+} catch (e) {
+  console.error("commonElementsStable failed test case");
+}
+try {
+  // Should Fail
+  const commonElementsStableTwo = commonElementsStable([1, 2, 3]);
+  console.error("commonElementsStable did not error");
+} catch (e) {
+  console.log("commonElementsStable failed successfully");
+}
+
+/* stringUtils.js*/
+/* findIsograms Tests */
+try {
+  // Should Pass
+  const findIsogramsOne = findIsograms("Wow! Did you see that racecar go?");
+  console.log("findIsograms passed successfully");
+} catch (e) {
+  console.error("findIsograms failed test case");
+}
+try {
+  // Should Fail
+  const findIsogramsTwo = findIsograms(" ");
+  console.error("findIsograms did not error");
+} catch (e) {
+  console.log("findIsograms failed successfully");
+}
+
+/* weaveChars Tests */
+try {
+  // Should Pass
+  const weaveCharsOne = weaveChars("abc", "12345");
+  console.log("weaveChars passed successfully");
+} catch (e) {
+  console.error("weaveChars failed test case");
 }
 
 try {
-  trimmedArrayStats([1, 2, 3], 2); // trimCount*2 >= length -> should throw
-  console.error("trimmedArrayStats should have failed but did not error");
+  // Should Fail
+  const weaveCharsTwo = weaveChars("abc", 123);
+  console.error("weaveChars did not error");
 } catch (e) {
-  console.log("trimmedArrayStats FAIL (expected):", e);
+  console.log("weaveChars failed successfully");
 }
 
-// ---------------- mergePairsUnique ----------------
+/* spliceSwap Tests */
 try {
-  const res = mergePairsUnique(
-    ["foo", "bar"],
-    [5, "John"],
-    ["foo", "bar"],
-    ["foo", "not bar"],
-    ["foo", "not bar"]
-  );
-  console.log("mergePairsUnique PASS:", res);
+  // Should Pass
+  const spliceSwapOne = spliceSwap("Fernando", "Oriundo", 2);
+  console.log("spliceSwap passed successfully");
 } catch (e) {
-  console.error("mergePairsUnique should have passed but failed:", e);
+  console.error("spliceSwap failed test case");
+}
+try {
+  // Should Fail
+  const spliceSwapTwo = spliceSwap("h", "Hello", 2);
+  console.error("spliceSwap did not error");
+} catch (e) {
+  console.log("spliceSwap failed successfully");
 }
 
-try {
-  mergePairsUnique([]); // array not length 2 -> should throw
-  console.error("mergePairsUnique should have failed but did not error");
-} catch (e) {
-  console.log("mergePairsUnique FAIL (expected):", e);
-}
+/* objectUtils.js*/
 
-// ---------------- commonElementsStable ----------------
+/* deepEqualityIgnore Tests */
 try {
-  const arr1 = [5, 7, 5, 9];
-  const arr2 = [20, 5, 7, 5];
-  const res = commonElementsStable(arr1, arr2);
-  console.log("commonElementsStable PASS:", res);
-} catch (e) {
-  console.error("commonElementsStable should have passed but failed:", e);
-}
-
-try {
-  commonElementsStable([1, 2, 3]); // only one array -> should throw
-  console.error("commonElementsStable should have failed but did not error");
-} catch (e) {
-  console.log("commonElementsStable FAIL (expected):", e);
-}
-
-// ---------------- findIsograms ----------------
-try {
-  const res = findIsograms("Hi mom, At noon, I'm going to take my kayak to the lake");
-  console.log("findIsograms PASS:", res);
-} catch (e) {
-  console.error("findIsograms should have passed but failed:", e);
-}
-
-try {
-  findIsograms("   "); // empty after trim -> should throw
-  console.error("findIsograms should have failed but did not error");
-} catch (e) {
-  console.log("findIsograms FAIL (expected):", e);
-}
-
-// ---------------- weaveChars ----------------
-try {
-  const res = weaveChars("Hi! 123");
-  console.log("weaveChars PASS:", res);
-} catch (e) {
-  console.error("weaveChars should have passed but failed:", e);
-}
-
-try {
-  weaveChars(""); // empty string -> should throw
-  console.error("weaveChars should have failed but did not error");
-} catch (e) {
-  console.log("weaveChars FAIL (expected):", e);
-}
-
-// ---------------- spliceSwap ----------------
-try {
-  const res = spliceSwap("Patrick", "Hill", 2);
-  console.log("spliceSwap PASS:", res);
-} catch (e) {
-  console.error("spliceSwap should have passed but failed:", e);
-}
-
-try {
-  spliceSwap("h", "e", 2); // not enough length -> should throw
-  console.error("spliceSwap should have failed but did not error");
-} catch (e) {
-  console.log("spliceSwap FAIL (expected):", e);
-}
-
-// ---------------- deepEqualityIgnore ----------------
-try {
+  // Should Pass
   const a = { x: 1, meta: { updatedAt: "yesterday" }, y: 2 };
   const b = { y: 2, x: 1, meta: { updatedAt: "today" } };
-  const res = deepEqualityIgnore(a, b, ["updatedAt"]);
-  console.log("deepEqualityIgnore PASS:", res);
+  const deepEqualityIgnoreOne = deepEqualityIgnore(a, b, ["updatedAt"]);
+  console.log("deepEqualityIgnore passed successfully");
 } catch (e) {
-  console.error("deepEqualityIgnore should have passed but failed:", e);
+  console.error("deepEqualityIgnore failed test case");
+}
+try {
+  // Should Fail
+  const a = { x: 1, meta: { updatedAt: "yesterday" }, y: 2 };
+  const b = { y: 2, x: 1, meta: { updatedAt: "today" } };
+  const deepEqualityIgnoreTwo = deepEqualityIgnore(a, b, []);
+  console.error("deepEqualityIgnore did not error");
+} catch (e) {
+  console.log("deepEqualityIgnore failed successfully");
 }
 
+/* commonKeyValuePaths Tests */
 try {
-  deepEqualityIgnore({}, {}, []); // ignoreKeys empty -> should throw
-  console.error("deepEqualityIgnore should have failed but did not error");
-} catch (e) {
-  console.log("deepEqualityIgnore FAIL (expected):", e);
-}
-
-// ---------------- commonKeyValuePaths ----------------
-try {
+  // Should Pass
   const first = { name: { first: "Patrick", last: "Hill" }, age: 46, school: "Stevens" };
   const second = { name: { first: "Patrick", last: "Hill" }, age: 20, active: true };
-  const res = commonKeyValuePaths(first, second);
-  console.log("commonKeyValuePaths PASS:", res);
+  const commonKeyValuePathsOne = commonKeyValuePaths(first, second);
+  console.log("commonKeyValuePaths passed successfully");
 } catch (e) {
-  console.error("commonKeyValuePaths should have passed but failed:", e);
+  console.error("commonKeyValuePaths failed test case");
+}
+try {
+  // Should Fail
+  const commonKeyValuePathsTwo = commonKeyValuePaths({ a: 1 }, { b: 2 });
+  console.error("commonKeyValuePaths did not error");
+} catch (e) {
+  console.log("commonKeyValuePaths failed successfully");
 }
 
+/* calculateObjectChained Tests */
 try {
-  commonKeyValuePaths({ a: 1 }, { b: 2 }); // each must have >=2 key/value pairs -> should throw
-  console.error("commonKeyValuePaths should have failed but did not error");
-} catch (e) {
-  console.log("commonKeyValuePaths FAIL (expected):", e);
-}
-
-// ---------------- calculateObjectChained ----------------
-try {
-  const res = calculateObjectChained(
+  // Should Pass
+  const calculateObjectChainedOne = calculateObjectChained(
     { a: 3, b: -7, c: 5 },
-    [(n) => n * 2, (n) => n - 1]
+    [n => n * 2, n => n - 1]
   );
-  console.log("calculateObjectChained PASS:", res);
+  console.log("calculateObjectChained passed successfully");
 } catch (e) {
-  console.error("calculateObjectChained should have passed but failed:", e);
+  console.error("calculateObjectChained failed test case");
 }
-
 try {
-  calculateObjectChained({ a: 3, b: -7 }, (n) => n * 2); // funcs not array -> should throw
-  console.error("calculateObjectChained should have failed but did not error");
+  // Should Fail
+  const calculateObjectChainedTwo = calculateObjectChained({ a: 1 }, n => n * 2);
+  console.error("calculateObjectChained did not error");
 } catch (e) {
-  console.log("calculateObjectChained FAIL (expected):", e);
+  console.log("calculateObjectChained failed successfully");
 }

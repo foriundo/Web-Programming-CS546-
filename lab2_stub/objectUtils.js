@@ -5,29 +5,96 @@
 
 let deepEqualityIgnore = (obj1, obj2, ignoreKeys) => {
   //deepEqualityIgnore
-  if (!obj1 || !obj2) throw "objects required";
-  if (typeof obj1 !== "object" || typeof obj2 !== "object") throw "inputs must be objects";
-  if (Array.isArray(obj1) || Array.isArray(obj2)) throw "inputs must not be arrays";
-
-  if (!Array.isArray(ignoreKeys) || ignoreKeys.length === 0) {
-    throw "ignoreKeys must be a non-empty array";
+  if (obj1 === undefined || obj2 === undefined) {
+    throw "obj1 and obj2 are required";
+  }
+  if (obj1 === null || obj2 === null) {
+    throw "obj1 and obj2 must be objects";
+  }
+  if (typeof obj1 !== "object" || typeof obj2 !== "object") {
+    throw "obj1 and obj2 must be objects";
+  }
+  if (Array.isArray(obj1) || Array.isArray(obj2)) {
+    throw "obj1 and obj2 must not be arrays";
   }
 
-  const ignore = new Set(ignoreKeys);
+  if (ignoreKeys === undefined) {
+    throw "ignoreKeys is required";
+  }
+  if (!Array.isArray(ignoreKeys)){
+    throw "ignoreKeys must be an array";
+    }
+  if (ignoreKeys.length === 0) {
+    throw "ignoreKeys must not be empty";
+  }
 
-  const equal = (a, b) => {
-    if (a === b) return true;
-    if (typeof a !== typeof b) return false;
+  for (let i = 0; i < ignoreKeys.length; i++) {
+    if (typeof ignoreKeys[i] !== "string") {
+      throw "each element in ignoreKeys must be a string";
+    }
+  }
 
-    if (typeof a === "object" && a && b) {
-      const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
-      for (let k of keys) {
-        if (ignore.has(k)) continue;
-        if (!(k in a) || !(k in b)) return false;
-        if (!equal(a[k], b[k])) return false;
+  let ignore = new Set(ignoreKeys);
+
+  let equal = (a, b) => {
+    if (a === b) {
+      return true;
+    }
+
+    if (typeof a !== typeof b) {
+      return false;
+    }
+
+    if (a === null || b === null){
+       return false;
+      }
+
+    if (Array.isArray(a) || Array.isArray(b)) {
+      if (!Array.isArray(a) || !Array.isArray(b)){ 
+        return false;
+      }
+      if (a.length !== b.length) {
+        return false;
+      }
+
+      for (let i = 0; i < a.length; i++) {
+        if (!equal(a[i], b[i])) {
+          return false;
+        }
       }
       return true;
     }
+
+    if (typeof a === "object") {
+      let aKeys = Object.keys(a);
+      let bKeys = Object.keys(b);
+
+      for (let i = 0; i < aKeys.length; i++) {
+        let k = aKeys[i];
+        if (ignore.has(k)) {
+          continue;
+        }
+        if (!(k in b)) {
+          return false;
+        }
+        if (!equal(a[k], b[k])) {
+          return false;
+        }
+      }
+
+      for (let i = 0; i < bKeys.length; i++) {
+        let k = bKeys[i];
+        if (ignore.has(k)) {
+          continue;
+        }
+        if (!(k in a)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
     return false;
   };
 
@@ -36,54 +103,139 @@ let deepEqualityIgnore = (obj1, obj2, ignoreKeys) => {
 
 let commonKeyValuePaths = (obj1, obj2) => {
   //commonKeyValuePaths
-  if (!obj1 || !obj2) throw "objects required";
-  if (typeof obj1 !== "object" || typeof obj2 !== "object") throw "inputs must be objects";
-  if (Array.isArray(obj1) || Array.isArray(obj2)) throw "inputs must not be arrays";
-  if (Object.keys(obj1).length < 2 || Object.keys(obj2).length < 2) {
-    throw "objects must have at least two keys";
+  if (obj1 === undefined || obj2 === undefined) {
+    throw "Both objects are required";
   }
 
-  const collect = (obj, prefix = "") => {
+  if (obj1 === null || obj2 === null) {
+    throw "Objects must not be null";
+  }
+
+  if (typeof obj1 !== "object" || typeof obj2 !== "object") {
+    throw "Inputs must be objects";
+  }
+
+  if (Array.isArray(obj1) || Array.isArray(obj2)) {
+    throw "Inputs must not be arrays";
+  }
+
+  if (Object.keys(obj1).length === 0 || Object.keys(obj2).length === 0) {
+    throw "Objects must not be empty";
+  }
+
+  if (Object.keys(obj1).length < 2 || Object.keys(obj2).length < 2) {
+    throw "Objects must have at least two key/value pairs";
+  }
+
+  let collection = (obj, prefix) => {
     let res = {};
-    for (let k in obj) {
-      const path = prefix ? `${prefix}.${k}` : k;
-      if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
-        Object.assign(res, collect(obj[k], path));
+    let keys = Object.keys(obj);
+
+    for (let i = 0; i < keys.length; i++) {
+      let k = keys[i];
+      let path;
+
+      if (prefix) {
+        path = prefix + "." + k;
       } else {
-        res[path] = obj[k];
+        path = k;
+      }
+
+      let val = obj[k];
+
+      if (typeof val === "object" && val !== null && !Array.isArray(val)) {
+        let inner = collection(val, path);
+        let innerKeys = Object.keys(inner);
+
+        for (let j = 0; j < innerKeys.length; j++) {
+          let innerPath = innerKeys[j];
+          res[innerPath] = inner[innerPath];
+        }
+      } else {
+        if (!Array.isArray(val)) {
+          res[path] = val;
+        }
       }
     }
+
     return res;
   };
 
-  const a = collect(obj1);
-  const b = collect(obj2);
+  let a = collection(obj1, "");
+  let b = collection(obj2, "");
 
-  return Object.keys(a)
-    .filter(p => p in b && a[p] === b[p])
-    .sort();
+  let result = [];
+  let aKeys = Object.keys(a);
+
+  for (let i = 0; i < aKeys.length; i++) {
+    let key = aKeys[i];
+
+    if (key in b && a[key] === b[key]) {
+      result.push(key);
+    }
+  }
+
+  result.sort();
+  return result;
 };
 
 let calculateObjectChained = (object, funcs) => {
   //calculateObjectChained
-  if (!object || typeof object !== "object" || Array.isArray(object)) {
-    throw "object must be a plain object";
-  }
-  if (!Array.isArray(funcs) || funcs.length === 0) throw "funcs must be a non-empty array";
-
-  for (let fn of funcs) {
-    if (typeof fn !== "function") throw "all funcs must be functions";
+  if (object === undefined) {
+    throw "object is required";
   }
 
-  const result = {};
-  for (let k in object) {
-    if (typeof object[k] !== "number" || !Number.isFinite(object[k])) {
+  if (object === null) {
+    throw "object must be an object";
+  }
+
+  if (typeof object !== "object") {
+    throw "object must be an object";
+  }
+
+  if (Array.isArray(object)) {
+    throw "object must not be an array";
+  }
+
+  if (funcs === undefined) {
+    throw "funcs is required";
+  }
+
+  if (!Array.isArray(funcs)) {
+    throw "funcs must be an array";
+  }
+
+  if (funcs.length === 0) {
+    throw "funcs must not be empty";
+  }
+
+  for (let i = 0; i < funcs.length; i++) {
+    if (typeof funcs[i] !== "function") {
+      throw "each element in funcs must be a function";
+    }
+  }
+
+  let result = {};
+  let keys = Object.keys(object);
+
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i];
+    let val = object[key];
+
+    if (typeof val !== "number" || Number.isFinite(val) === false) {
       throw "object values must be numbers";
     }
-    let v = object[k];
-    for (let fn of funcs) v = fn(v);
-    v = Math.cbrt(Math.abs(v));
-    result[k] = Number(v.toFixed(3));
+
+    let v = val;
+
+    for (let j = 0; j < funcs.length; j++) {
+      v = funcs[j](v);
+    }
+
+    v = Math.abs(v);
+    v = Math.cbrt(v);
+
+    result[key] = Number(v.toFixed(3));
   }
 
   return result;
